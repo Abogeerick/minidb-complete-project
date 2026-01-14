@@ -4,7 +4,7 @@ A relational database management system built from scratch in Python. No externa
 
 **Author:** Erick Aboge  
 **Email:** abogeerick@gmail.com  
-**Live Demo:** [https://your-app-runner-url.awsapprunner.com](https://your-app-runner-url.awsapprunner.com)
+**Live Demo:** [https://n5t32y4qnz.eu-west-1.awsapprunner.com](https://n5t32y4qnz.eu-west-1.awsapprunner.com)
 
 ---
 
@@ -71,7 +71,7 @@ Goodbye!
 
 The expense tracker demo is deployed on AWS App Runner and can be accessed at:
 
-**[https://your-app-runner-url.awsapprunner.com](https://your-app-runner-url.awsapprunner.com)**
+**[https://n5t32y4qnz.eu-west-1.awsapprunner.com](https://n5t32y4qnz.eu-west-1.awsapprunner.com)**
 
 ### Demo Features
 

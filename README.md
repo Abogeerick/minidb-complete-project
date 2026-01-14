@@ -28,6 +28,43 @@ python app.py
 # Open http://localhost:5000
 ```
 
+### Using the REPL
+
+Once you start the SQL shell with `python -m minidb`, type `.help` to see available commands:
+
+```
+minidb> .help
+
+Special Commands:
+  .help             Show this help message
+  .tables           List all tables
+  .schema <table>   Show schema for a table
+  .quit             Exit the REPL
+
+SQL Commands:
+  CREATE TABLE, DROP TABLE, INSERT INTO, SELECT,
+  UPDATE, DELETE FROM, CREATE INDEX, SHOW TABLES, DESCRIBE
+```
+
+Example session:
+
+```sql
+minidb> CREATE TABLE users (id INTEGER PRIMARY KEY, name VARCHAR(100));
+Table 'users' created
+
+minidb> INSERT INTO users VALUES (1, 'Alice');
+(1 row(s) affected)
+
+minidb> SELECT * FROM users;
+id | name
+---+------
+1  | Alice
+(1 row(s))
+
+minidb> .quit
+Goodbye!
+```
+
 ---
 
 ## Live Demo

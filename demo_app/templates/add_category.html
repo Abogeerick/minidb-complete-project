@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Add Category{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+        <a href="{{ url_for('categories') }}" class="text-gray-500 hover:text-gray-700 mb-4 inline-block">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Categories
+        </a>
+        <h1 class="text-3xl font-bold text-gray-900">Add Category</h1>
+        <p class="text-gray-500 mt-1">Create a new expense category</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <form action="{{ url_for('add_category') }}" method="POST" class="space-y-6">
+            <!-- Name -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                    Category Name <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="name" name="name" required
+                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                       placeholder="e.g., Groceries">
+            </div>
+
+            <!-- Color -->
+            <div>
+                <label for="color" class="block text-sm font-medium text-gray-700 mb-2">
+                    Color
+                </label>
+                <div class="flex items-center space-x-4">
+                    <input type="color" id="color" name="color" value="#6366f1"
+                           class="w-16 h-12 rounded-lg cursor-pointer border-0">
+                    <span class="text-gray-500 text-sm">Choose a color to identify this category</span>
+                </div>
+            </div>
+
+            <!-- Icon -->
+            <div>
+                <label for="icon" class="block text-sm font-medium text-gray-700 mb-2">
+                    Icon
+                </label>
+                <select id="icon" name="icon"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition bg-white">
+                    <option value="folder">📁 Folder</option>
+                    <option value="utensils">🍽️ Food</option>
+                    <option value="car">🚗 Transportation</option>
+                    <option value="shopping-bag">🛍️ Shopping</option>
+                    <option value="film">🎬 Entertainment</option>
+                    <option value="file-text">📄 Bills</option>
+                    <option value="heart">❤️ Health</option>
+                    <option value="home">🏠 Home</option>
+                    <option value="briefcase">💼 Work</option>
+                    <option value="plane">✈️ Travel</option>
+                    <option value="book">📚 Education</option>
+                    <option value="gift">🎁 Gifts</option>
+                </select>
+            </div>
+
+            <!-- Preview -->
+            <div class="p-4 bg-gray-50 rounded-xl">
+                <label class="block text-sm font-medium text-gray-700 mb-3">Preview</label>
+                <div class="flex items-center space-x-3">
+                    <div id="preview-icon" class="w-12 h-12 rounded-xl flex items-center justify-center" 
+                         style="background-color: #6366f120">
+                        <i class="fas fa-folder text-xl" style="color: #6366f1"></i>
+                    </div>
+                    <span id="preview-name" class="font-semibold text-gray-900">New Category</span>
+                </div>
+            </div>
+
+            <!-- SQL Preview -->
+            <div class="bg-gray-800 text-green-400 p-4 rounded-xl font-mono text-sm">
+                <span class="text-gray-500">-- SQL that will be executed:</span><br>
+                <span class="text-blue-400">INSERT INTO</span> categories <span class="text-blue-400">VALUES</span> (<br>
+                &nbsp;&nbsp;id, <span class="text-yellow-300">'name'</span>, <span class="text-yellow-300">'#color'</span>, <span class="text-yellow-300">'icon'</span><br>
+                );
+            </div>
+
+            <!-- Submit -->
+            <div class="flex items-center justify-end space-x-4 pt-4">
+                <a href="{{ url_for('categories') }}" 
+                   class="px-6 py-3 text-gray-600 hover:text-gray-800 font-medium transition">
+                    Cancel
+                </a>
+                <button type="submit" 
+                        class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition shadow-lg shadow-indigo-200">
+                    <i class="fas fa-plus mr-2"></i>Add Category
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Live preview
+    const nameInput = document.getElementById('name');
+    const colorInput = document.getElementById('color');
+    const iconSelect = document.getElementById('icon');
+    const previewIcon = document.getElementById('preview-icon');
+    const previewName = document.getElementById('preview-name');
+
+    function updatePreview() {
+        const color = colorInput.value;
+        const icon = iconSelect.value;
+        const name = nameInput.value || 'New Category';
+
+        previewIcon.style.backgroundColor = color + '20';
+        previewIcon.innerHTML = `<i class="fas fa-${icon} text-xl" style="color: ${color}"></i>`;
+        previewName.textContent = name;
+    }
+
+    nameInput.addEventListener('input', updatePreview);
+    colorInput.addEventListener('input', updatePreview);
+    iconSelect.addEventListener('change', updatePreview);
+</script>
+{% endblock %}

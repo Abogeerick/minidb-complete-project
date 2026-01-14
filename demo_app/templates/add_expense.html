@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Add Expense{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+        <a href="{{ url_for('expenses') }}" class="text-gray-500 hover:text-gray-700 mb-4 inline-block">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Expenses
+        </a>
+        <h1 class="text-3xl font-bold text-gray-900">Add Expense</h1>
+        <p class="text-gray-500 mt-1">Record a new expense transaction</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <form action="{{ url_for('add_expense') }}" method="POST" class="space-y-6">
+            <!-- Description -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                    Description <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="description" name="description" required
+                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                       placeholder="e.g., Grocery shopping at Naivas">
+            </div>
+
+            <!-- Amount -->
+            <div>
+                <label for="amount" class="block text-sm font-medium text-gray-700 mb-2">
+                    Amount (KES) <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">KES</span>
+                    <input type="number" id="amount" name="amount" step="0.01" min="0.01" required
+                           class="w-full pl-14 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                           placeholder="0.00">
+                </div>
+            </div>
+
+            <!-- Category -->
+            <div>
+                <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">
+                    Category <span class="text-red-500">*</span>
+                </label>
+                <select id="category_id" name="category_id" required
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition bg-white">
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Date -->
+            <div>
+                <label for="expense_date" class="block text-sm font-medium text-gray-700 mb-2">
+                    Date <span class="text-red-500">*</span>
+                </label>
+                <input type="date" id="expense_date" name="expense_date" required
+                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                       value="{{ today }}">
+            </div>
+
+            <!-- SQL Preview -->
+            <div class="bg-gray-800 text-green-400 p-4 rounded-xl font-mono text-sm">
+                <span class="text-gray-500">-- SQL that will be executed:</span><br>
+                <span class="text-blue-400">INSERT INTO</span> expenses <span class="text-blue-400">VALUES</span> (<br>
+                &nbsp;&nbsp;id, <span class="text-yellow-300">'description'</span>, amount, category_id, <span class="text-yellow-300">'date'</span><br>
+                );
+            </div>
+
+            <!-- Submit -->
+            <div class="flex items-center justify-end space-x-4 pt-4">
+                <a href="{{ url_for('expenses') }}" 
+                   class="px-6 py-3 text-gray-600 hover:text-gray-800 font-medium transition">
+                    Cancel
+                </a>
+                <button type="submit" 
+                        class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition shadow-lg shadow-indigo-200">
+                    <i class="fas fa-plus mr-2"></i>Add Expense
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Set default date to today
+    document.getElementById('expense_date').valueAsDate = new Date();
+</script>
+{% endblock %}

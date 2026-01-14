@@ -1,142 +1,66 @@
-# MiniDB - A Relational Database Management System from Scratch
+# MiniDB
 
-> **Pesapal Junior Developer Challenge '26 Submission**  
-> **Author:** Erick Aboge  
-> **Email:** abogeerick@gmail.com
+A relational database management system built from scratch in Python. No external database libraries are used - the SQL parser, query executor, B-tree indexing, and storage engine are all custom implementations.
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+**Author:** Erick Aboge  
+**Email:** abogeerick@gmail.com
 
-## 🎯 Overview
+---
 
-MiniDB is a **complete relational database management system built entirely from scratch** without using any existing database engines. It features a custom SQL parser, B-tree indexing, query executor, and persistent storage - demonstrating deep understanding of how databases work under the hood.
-
-### Key Features
-
-✅ **Complete SQL Parser** - Hand-written lexer and recursive descent parser  
-✅ **B-Tree Indexing** - O(log n) lookups with range query support  
-✅ **CRUD Operations** - Full INSERT, SELECT, UPDATE, DELETE support  
-✅ **JOIN Support** - INNER JOIN, LEFT JOIN with ON conditions  
-✅ **Aggregations** - COUNT, SUM, AVG, MIN, MAX with GROUP BY  
-✅ **Data Type System** - INTEGER, FLOAT, VARCHAR, BOOLEAN, DATE, TIMESTAMP  
-✅ **Constraints** - PRIMARY KEY, UNIQUE, NOT NULL, DEFAULT  
-✅ **Interactive REPL** - Command-line SQL shell  
-✅ **Demo Web App** - Flask expense tracker showcasing all features
-
-## 📁 Project Structure
-
-```
-pesapal-challenge/
-├── minidb/                     # Core RDBMS Implementation
-│   ├── __init__.py
-│   ├── __main__.py            # Entry point
-│   ├── core/
-│   │   ├── database.py        # Main Database class
-│   │   ├── executor.py        # Query executor
-│   │   ├── repl.py            # Interactive SQL shell
-│   │   ├── schema.py          # Table schemas & catalog
-│   │   └── types.py           # Data type definitions
-│   ├── parser/
-│   │   ├── lexer.py           # SQL tokenizer
-│   │   └── parser.py          # Recursive descent parser → AST
-│   ├── storage/
-│   │   └── engine.py          # Persistence layer
-│   ├── indexing/
-│   │   └── btree.py           # B-tree index implementation
-│   └── tests/
-│       └── test_minidb.py     # Comprehensive test suite
-│
-└── demo_app/                   # Flask Demo Application
-    ├── app.py                  # Expense tracker app
-    └── templates/              # HTML templates
-```
-
-## 🏗️ Architecture
-
-### Component Overview
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         SQL Query                               │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     LEXER (Tokenizer)                           │
-│  • Converts SQL string to token stream                          │
-│  • Handles keywords, operators, literals, identifiers           │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                PARSER (Recursive Descent)                       │
-│  • Builds Abstract Syntax Tree (AST)                           │
-│  • Validates SQL grammar                                        │
-│  • Supports SELECT, INSERT, UPDATE, DELETE, CREATE, DROP       │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    QUERY EXECUTOR                               │
-│  • Interprets AST nodes                                         │
-│  • Evaluates expressions                                        │
-│  • Performs JOINs, aggregations                                 │
-│  • Applies WHERE filters, ORDER BY, LIMIT                       │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-              ┌───────────────┴───────────────┐
-              ▼                               ▼
-┌─────────────────────────┐     ┌─────────────────────────┐
-│    INDEX MANAGER        │     │    STORAGE ENGINE       │
-│  • B-tree indexes       │     │  • Table data files     │
-│  • O(log n) lookups     │     │  • Schema catalog       │
-│  • Range queries        │     │  • Row ID management    │
-└─────────────────────────┘     └─────────────────────────┘
-              │                               │
-              └───────────────┬───────────────┘
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                     FILE SYSTEM                                 │
-│  • JSON-based persistence                                       │
-│  • One file per table + catalog + indexes                       │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### Why These Design Choices?
-
-1. **Recursive Descent Parser**: Chosen for its clarity and maintainability. Each grammar rule maps directly to a parsing function, making the code self-documenting.
-
-2. **B-Tree Indexing**: Industry-standard data structure for databases. Provides O(log n) lookups and supports range queries efficiently.
-
-3. **JSON Storage**: While not as performant as binary formats, JSON is human-readable and debuggable - perfect for demonstrating concepts.
-
-4. **Expression Evaluator Pattern**: Clean separation between parsing and execution. Makes it easy to add new operators and functions.
-
-## 🚀 Quick Start
-
-### 1. Run the Interactive REPL
+## Quick Start
 
 ```bash
-cd pesapal-challenge
+# Clone the repository
+git clone https://github.com/Abogeerick/minidb-complete-project.git
+cd minidb-complete-project
+
+# Run the interactive SQL shell
 python -m minidb
+
+# Run the test suite
+python minidb/tests/test_minidb.py
+
+# Run the demo web application
+pip install flask
+cd demo_app
+python app.py
+# Open http://localhost:5000
 ```
 
-You'll see the MiniDB banner and prompt:
+---
+
+## Project Structure
 
 ```
-╔══════════════════════════════════════════════════════════════╗
-║   ███╗   ███╗██╗███╗   ██╗██╗██████╗ ██████╗                ║
-║   ████╗ ████║██║████╗  ██║██║██╔══██╗██╔══██╗               ║
-║   ...                                                        ║
-╚══════════════════════════════════════════════════════════════╝
-
-minidb> 
+minidb-project/
+├── minidb/
+│   ├── core/
+│   │   ├── database.py      # Main Database class (public API)
+│   │   ├── executor.py      # Query execution engine
+│   │   ├── repl.py          # Interactive SQL shell
+│   │   ├── schema.py        # Table schema and catalog
+│   │   └── types.py         # Data type definitions and validation
+│   ├── parser/
+│   │   ├── lexer.py         # SQL tokenizer
+│   │   └── parser.py        # Recursive descent parser
+│   ├── storage/
+│   │   └── engine.py        # Persistence layer
+│   ├── indexing/
+│   │   └── btree.py         # B-tree index implementation
+│   └── tests/
+│       └── test_minidb.py   # Test suite (49 tests)
+└── demo_app/
+    ├── app.py               # Flask expense tracker
+    └── templates/           # HTML templates
 ```
 
-### 2. Try Some SQL Commands
+---
+
+## Supported SQL
+
+### Data Definition
 
 ```sql
--- Create a table
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -145,217 +69,236 @@ CREATE TABLE users (
     active BOOLEAN DEFAULT TRUE
 );
 
--- Insert data
+DROP TABLE users;
+
+CREATE INDEX idx_name ON users(name);
+CREATE UNIQUE INDEX idx_email ON users(email);
+```
+
+### Data Manipulation
+
+```sql
+-- Insert
 INSERT INTO users VALUES (1, 'Alice', 'alice@example.com', 30, TRUE);
-INSERT INTO users VALUES (2, 'Bob', 'bob@example.com', 25, TRUE);
-INSERT INTO users VALUES (3, 'Charlie', 'charlie@example.com', 35, FALSE);
+INSERT INTO users (id, name, email) VALUES (2, 'Bob', 'bob@example.com');
 
--- Query with conditions
-SELECT name, age FROM users WHERE age > 25 ORDER BY age DESC;
-
--- Aggregations
-SELECT COUNT(*) as total, AVG(age) as avg_age FROM users WHERE active = TRUE;
+-- Select
+SELECT * FROM users;
+SELECT name, age FROM users WHERE age > 25 ORDER BY age DESC LIMIT 10;
+SELECT DISTINCT category FROM products;
 
 -- Update
-UPDATE users SET age = 31 WHERE name = 'Alice';
+UPDATE users SET age = 31, active = FALSE WHERE id = 1;
 
 -- Delete
 DELETE FROM users WHERE active = FALSE;
 ```
 
-### 3. Run the Demo Web App
-
-```bash
-cd demo_app
-pip install flask
-python app.py
-```
-
-Open http://localhost:5000 to see the expense tracker in action!
-
-### 4. Run Tests
-
-```bash
-python -m pytest minidb/tests/test_minidb.py -v
-# Or simply:
-python minidb/tests/test_minidb.py
-```
-
-## 📖 SQL Reference
-
-### Supported Statements
-
-| Statement | Example |
-|-----------|---------|
-| CREATE TABLE | `CREATE TABLE users (id INTEGER PRIMARY KEY, name VARCHAR(100))` |
-| DROP TABLE | `DROP TABLE users` |
-| INSERT | `INSERT INTO users VALUES (1, 'Alice')` |
-| SELECT | `SELECT * FROM users WHERE id = 1` |
-| UPDATE | `UPDATE users SET name = 'Bob' WHERE id = 1` |
-| DELETE | `DELETE FROM users WHERE id = 1` |
-| CREATE INDEX | `CREATE INDEX idx_name ON users(name)` |
-| SHOW TABLES | `SHOW TABLES` |
-| DESCRIBE | `DESCRIBE users` |
-| TRUNCATE | `TRUNCATE TABLE users` |
-
-### Supported Data Types
-
-| Type | Description | Example |
-|------|-------------|---------|
-| INTEGER | Whole numbers | `42`, `-17` |
-| FLOAT | Decimal numbers | `3.14`, `-2.5` |
-| VARCHAR(n) | String with max length n | `'Hello'` |
-| TEXT | Unlimited string | `'Long text...'` |
-| BOOLEAN | TRUE or FALSE | `TRUE`, `FALSE` |
-| DATE | Date value | `'2024-01-15'` |
-| TIMESTAMP | Date and time | `'2024-01-15 10:30:00'` |
-
-### WHERE Operators
-
-| Operator | Example |
-|----------|---------|
-| `=`, `!=`, `<>` | `WHERE id = 1` |
-| `<`, `>`, `<=`, `>=` | `WHERE age >= 18` |
-| `AND`, `OR`, `NOT` | `WHERE age > 18 AND active = TRUE` |
-| `LIKE` | `WHERE name LIKE 'A%'` |
-| `IN` | `WHERE status IN ('active', 'pending')` |
-| `BETWEEN` | `WHERE age BETWEEN 18 AND 65` |
-| `IS NULL`, `IS NOT NULL` | `WHERE email IS NOT NULL` |
-
-### JOIN Syntax
+### Queries
 
 ```sql
--- INNER JOIN
-SELECT e.name, d.name as department
+-- Filtering
+SELECT * FROM users WHERE age > 25 AND active = TRUE;
+SELECT * FROM products WHERE name LIKE 'A%';
+SELECT * FROM orders WHERE status IN ('pending', 'shipped');
+SELECT * FROM items WHERE price BETWEEN 10 AND 50;
+SELECT * FROM users WHERE email IS NOT NULL;
+
+-- Joins
+SELECT e.name, d.name AS department
 FROM employees e
 JOIN departments d ON e.dept_id = d.id;
 
--- LEFT JOIN
-SELECT e.name, d.name as department
+SELECT e.name, d.name AS department
 FROM employees e
 LEFT JOIN departments d ON e.dept_id = d.id;
+
+-- Aggregations
+SELECT COUNT(*) FROM users;
+SELECT category, SUM(amount), AVG(amount) FROM expenses GROUP BY category;
+SELECT category, COUNT(*) AS cnt FROM products GROUP BY category HAVING cnt > 5;
+
+-- Sorting and pagination
+SELECT * FROM users ORDER BY created_at DESC LIMIT 20 OFFSET 40;
 ```
 
-### Aggregations
+### Utility Commands
 
 ```sql
-SELECT 
-    category,
-    COUNT(*) as count,
-    SUM(amount) as total,
-    AVG(amount) as average,
-    MIN(amount) as minimum,
-    MAX(amount) as maximum
-FROM expenses
-GROUP BY category
-HAVING total > 100
-ORDER BY total DESC;
+SHOW TABLES;
+DESCRIBE users;
+TRUNCATE TABLE logs;
 ```
-
-## 🧪 Demo Application
-
-The demo app is a **fully functional expense tracker** that showcases:
-
-- **Dashboard**: Aggregated stats using `SUM()`, `COUNT()`, `AVG()`
-- **Expense List**: `JOIN` query linking expenses to categories
-- **Add/Edit/Delete**: Full CRUD operations
-- **Categories**: `LEFT JOIN` with `GROUP BY` for expense counts
-- **Live SQL Display**: Shows actual SQL being executed
-
-### Screenshots
-
-The demo shows SQL queries being executed in real-time, demonstrating:
-
-```sql
--- Dashboard query
-SELECT c.name, c.color, SUM(e.amount) as total
-FROM expenses e
-JOIN categories c ON e.category_id = c.id
-GROUP BY c.name, c.color
-ORDER BY total DESC;
-
--- Categories with expense counts
-SELECT c.id, c.name, c.color, c.icon, COUNT(e.id) as expense_count
-FROM categories c
-LEFT JOIN expenses e ON c.id = e.category_id
-GROUP BY c.id, c.name, c.color, c.icon
-ORDER BY c.name;
-```
-
-## 🔧 Implementation Details
-
-### B-Tree Index
-
-The B-tree implementation supports:
-- Configurable branching factor (order)
-- Duplicate keys (for non-unique indexes)
-- Range queries: `WHERE price BETWEEN 10 AND 50`
-- Auto-balancing on insert/delete
-
-```python
-# Internal structure
-class BTreeNode:
-    keys: List[Any]           # Key values
-    values: List[List[int]]   # Lists of row IDs per key
-    children: List[int]       # Child node IDs
-    is_leaf: bool
-```
-
-### Query Execution Pipeline
-
-1. **Tokenization**: SQL string → Token stream
-2. **Parsing**: Tokens → Abstract Syntax Tree (AST)
-3. **Execution**: AST → Result set
-4. **Expression Evaluation**: Handles nested operations, type coercion
-
-### Storage Format
-
-Each table is stored as a JSON file:
-```json
-{
-  "rows": {
-    "1": {"id": 1, "name": "Alice", "age": 30},
-    "2": {"id": 2, "name": "Bob", "age": 25}
-  },
-  "next_row_id": 3
-}
-```
-
-## 📊 Test Coverage
-
-The test suite covers:
-
-| Category | Tests |
-|----------|-------|
-| Table Operations | CREATE, DROP, SHOW, DESCRIBE |
-| CRUD | INSERT, SELECT, UPDATE, DELETE |
-| WHERE Clause | All operators, AND/OR/NOT |
-| ORDER BY | ASC, DESC, LIMIT, OFFSET |
-| Aggregations | COUNT, SUM, AVG, MIN, MAX, GROUP BY |
-| JOINs | INNER, LEFT, with aggregations |
-| Indexing | CREATE INDEX, UNIQUE constraints |
-| Data Types | All supported types |
-
-Run tests: `python minidb/tests/test_minidb.py`
-
-## 🎓 What I Learned
-
-Building this RDBMS taught me:
-
-1. **Parser Design**: How lexers and parsers work together to process language
-2. **Data Structures**: Practical application of B-trees for indexing
-3. **Query Optimization**: How JOIN order and indexing affect performance
-4. **Type Systems**: Implementing type validation and coercion
-5. **Architecture**: Clean separation of concerns in complex systems
-
-## 📞 Contact
-
-**Erick Aboge**  
-📧 abogeerick@gmail.com  
-🔗 [LinkedIn](https://www.linkedin.com/in/erick-aboge-3a09572a6/)  
-🌐 [Portfolio](https://erick-aboge-portfolio.vercel.app/)  
-💻 [GitHub](https://github.com/Abogeerick)
 
 ---
 
-*Built with ❤️ for the Pesapal Junior Developer Challenge '26*
+## Supported Data Types
+
+| Type | Description |
+|------|-------------|
+| `INTEGER` | 64-bit signed integer |
+| `FLOAT` | Double-precision floating point |
+| `VARCHAR(n)` | Variable-length string with max length n |
+| `TEXT` | Unlimited length string |
+| `BOOLEAN` | TRUE or FALSE |
+| `DATE` | Date in YYYY-MM-DD format |
+| `TIMESTAMP` | Date and time in YYYY-MM-DD HH:MM:SS format |
+
+---
+
+## Architecture
+
+### Query Processing Pipeline
+
+```
+SQL String
+    │
+    ▼
+┌─────────────────┐
+│     Lexer       │  Tokenizes input into keywords, operators, literals
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│     Parser      │  Builds Abstract Syntax Tree using recursive descent
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│    Executor     │  Interprets AST, evaluates expressions, executes operations
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌───────┐ ┌───────────┐
+│ Index │ │  Storage  │
+│Manager│ │  Engine   │
+└───────┘ └───────────┘
+```
+
+### Storage Model
+
+- One JSON file per table containing all rows
+- Separate catalog file for schema metadata
+- Separate files for each B-tree index
+- Row IDs are auto-generated integers
+
+### Indexing
+
+B-tree indexes are used for:
+- Primary key lookups
+- Unique constraint enforcement
+- Range queries (BETWEEN, <, >, etc.)
+
+Indexes are automatically created for PRIMARY KEY and UNIQUE columns.
+
+---
+
+## API Usage
+
+```python
+from minidb import Database
+
+db = Database('./data')
+
+# Create table
+db.execute('''
+    CREATE TABLE users (
+        id INTEGER PRIMARY KEY,
+        name VARCHAR(100) NOT NULL
+    )
+''')
+
+# Insert data
+db.execute("INSERT INTO users VALUES (1, 'Alice')")
+
+# Query
+result = db.execute("SELECT * FROM users WHERE id = 1")
+for row in result.rows:
+    print(row)  # {'id': 1, 'name': 'Alice'}
+
+# Get table list
+tables = db.tables()
+
+# Get row count
+count = db.count('users')
+```
+
+---
+
+## Demo Application
+
+The `demo_app/` directory contains a Flask expense tracker that demonstrates:
+
+- Table creation with foreign keys
+- CRUD operations through a web interface
+- JOIN queries for displaying related data
+- Aggregate queries for dashboard statistics
+- Index usage for category lookups
+
+To run:
+
+```bash
+pip install flask
+cd demo_app
+python app.py
+```
+
+---
+
+## Testing
+
+The test suite covers:
+
+- Table operations (CREATE, DROP, SHOW, DESCRIBE)
+- All CRUD operations
+- WHERE clause with all operators
+- ORDER BY, LIMIT, OFFSET
+- Aggregate functions and GROUP BY
+- INNER and LEFT JOINs
+- Index creation and unique constraints
+- All data types
+
+Run tests:
+
+```bash
+python minidb/tests/test_minidb.py
+```
+
+Expected output: 49 tests, all passing.
+
+---
+
+## Design Decisions
+
+**Why recursive descent parsing?**  
+Each grammar rule maps directly to a function, making the code readable and debuggable. Error messages include line and column numbers.
+
+**Why JSON storage?**  
+Simplicity and debuggability. The data files are human-readable, which is useful for development and demonstration. A production system would use a binary format.
+
+**Why B-trees?**  
+Standard choice for database indexes. O(log n) lookups, efficient range scans, and straightforward implementation.
+
+**Why no query optimizer?**  
+Scope limitation. The executor uses straightforward nested-loop evaluation. A real DBMS would include cost-based optimization.
+
+---
+
+## Limitations
+
+- No transactions or ACID guarantees
+- No concurrent access handling (single-threaded)
+- No query optimization (plans are executed as written)
+- JSON storage is not space-efficient
+- No support for subqueries
+- No ALTER TABLE
+
+---
+
+## Contact
+
+Erick Aboge  
+abogeerick@gmail.com  
+[LinkedIn](https://www.linkedin.com/in/erick-aboge-3a09572a6/)  
+[GitHub](https://github.com/Abogeerick)

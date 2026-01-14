@@ -333,14 +333,11 @@ class Parser:
                 # Check for alias
                 alias = None
                 if self._consume_if(TokenType.AS):
-                    alias = self._expect(TokenType.IDENTIFIER).value
-                elif self._match(TokenType.IDENTIFIER) and not self._match(
-                    TokenType.FROM, TokenType.WHERE, TokenType.JOIN, 
-                    TokenType.ORDER, TokenType.GROUP, TokenType.LIMIT):
-                    # Implicit alias
-                    next_token = self._current()
-                    if next_token.type == TokenType.IDENTIFIER:
-                        alias = self._advance().value
+                    # After AS, accept any token as alias (including keywords like COUNT)
+                    alias = self._advance().value
+                elif self._match(TokenType.IDENTIFIER):
+                    # Implicit alias - must be identifier and not a clause keyword
+                    alias = self._advance().value
                 
                 if isinstance(expr, ColumnRef):
                     expr.alias = alias

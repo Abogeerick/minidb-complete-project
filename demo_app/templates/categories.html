@@ -18,7 +18,7 @@
 <!-- SQL Query Info -->
 <div class="bg-gray-800 text-green-400 p-4 rounded-xl mb-6 font-mono text-sm overflow-x-auto">
     <span class="text-gray-500">-- Query using LEFT JOIN and GROUP BY:</span><br>
-    <span class="text-blue-400">SELECT</span> c.id, c.name, c.color, c.icon, <span class="text-purple-400">COUNT</span>(e.id) <span class="text-blue-400">as</span> expense_count<br>
+    <span class="text-blue-400">SELECT</span> c.id, c.name, c.color, c.icon, <span class="text-purple-400">COUNT</span>(e.id) <span class="text-blue-400">as</span> num_expenses<br>
     <span class="text-blue-400">FROM</span> categories c<br>
     <span class="text-blue-400">LEFT JOIN</span> expenses e <span class="text-blue-400">ON</span> c.id = e.category_id<br>
     <span class="text-blue-400">GROUP BY</span> c.id, c.name, c.color, c.icon<br>
@@ -36,7 +36,7 @@
                            style="color: {{ category.color }}"></i>
                     </div>
                     <div class="flex space-x-1">
-                        {% if category.expense_count == 0 %}
+                        {% if category.num_expenses == 0 %}
                             <form action="{{ url_for('delete_category', category_id=category.id) }}" method="POST" class="inline"
                                   onsubmit="return confirm('Delete this category?')">
                                 <button type="submit" 
@@ -52,7 +52,7 @@
                 
                 <div class="mt-3 flex items-center justify-between">
                     <span class="text-gray-500">
-                        {{ category.expense_count }} expense{{ 's' if category.expense_count != 1 else '' }}
+                        {{ category.num_expenses }} expense{{ 's' if category.num_expenses != 1 else '' }}
                     </span>
                     <div class="w-4 h-4 rounded-full" style="background-color: {{ category.color }}"></div>
                 </div>

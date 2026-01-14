@@ -92,8 +92,8 @@ def index():
     total = total_result.rows[0]['total'] if total_result.rows[0]['total'] else 0
     
     # Get expense count
-    count_result = db.execute("SELECT COUNT(*) as count FROM expenses")
-    count = count_result.rows[0]['count']
+    count_result = db.execute("SELECT COUNT(*) as cnt FROM expenses")
+    count = count_result.rows[0]['cnt']
     
     # Get expenses by category (using JOIN)
     by_category = db.execute("""
@@ -218,7 +218,7 @@ def delete_expense(expense_id):
 def categories():
     """List all categories with expense counts."""
     result = db.execute("""
-        SELECT c.id, c.name, c.color, c.icon, COUNT(e.id) as expense_count
+        SELECT c.id, c.name, c.color, c.icon, COUNT(e.id) as num_expenses
         FROM categories c
         LEFT JOIN expenses e ON c.id = e.category_id
         GROUP BY c.id, c.name, c.color, c.icon
@@ -259,8 +259,8 @@ def add_category():
 def delete_category(category_id):
     """Delete a category."""
     # Check if category has expenses
-    check = db.execute(f"SELECT COUNT(*) as count FROM expenses WHERE category_id = {category_id}")
-    if check.rows[0]['count'] > 0:
+    check = db.execute(f"SELECT COUNT(*) as cnt FROM expenses WHERE category_id = {category_id}")
+    if check.rows[0]['cnt'] > 0:
         flash('Cannot delete category with existing expenses.', 'error')
         return redirect(url_for('categories'))
     
@@ -276,7 +276,7 @@ def api_stats():
     total = db.execute("SELECT SUM(amount) as total FROM expenses").rows[0]['total'] or 0
     
     # Count
-    count = db.execute("SELECT COUNT(*) as count FROM expenses").rows[0]['count']
+    count = db.execute("SELECT COUNT(*) as cnt FROM expenses").rows[0]['cnt']
     
     # By category
     by_category = db.execute("""
